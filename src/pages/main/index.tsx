@@ -1,22 +1,27 @@
-import {ReactNode} from "react";
+import { ReactNode } from "react";
 import BoardWidget from "@/widget/board";
-import styles from './styles.module.scss'
-import {useGameContext} from "@/shared/store";
+import styles from "./styles.module.scss";
+import { useGameContext } from "@/shared/store";
 import TaskDescription from "@/widget/task";
 
 const MainPage = (): ReactNode => {
-	const {winner} = useGameContext()
+  const { board, winner } = useGameContext();
 
-	return (
-		<main className={styles.page}>
-			{!!winner && <h1 className="text-4xl">Игрок {winner} победил!</h1>}
+  // Проверяем, закончилась ли игра ничьей
+  const isDraw = winner === null && board.every((cell) => cell.player !== null);
 
-			<BoardWidget />
+  return (
+    <main className={styles.page}>
+      {winner === "X" && <h1 className="text-4xl">Игрок X победил!</h1>}
+      {winner === "O" && <h1 className="text-4xl">Игрок O победил!</h1>}
+      {isDraw && <h1 className="text-4xl">Ничья!</h1>}
 
-			{/* Описание задания */}
-			<TaskDescription />
-		</main>
-	);
+      <BoardWidget />
+
+      {/* Описание задания */}
+      <TaskDescription />
+    </main>
+  );
 };
 
 export default MainPage;
